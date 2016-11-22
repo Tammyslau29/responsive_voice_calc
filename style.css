@@ -31,7 +31,6 @@
 .numeric_buttons{
     width:32%;
     height:66px;
-    border-radius: 100%;
     outline: none;
 }
 .arithmetic_functions{
@@ -41,10 +40,11 @@
 }
 .arithmetic_buttons{
     width:100%;
-    height:71px;
+    height:55px;
+    margin-bottom: 5px;
 }
 #addition_button{
-    height:100px;
+    height:134px;
 }
 .numeric_buttons, .arithmetic_buttons, .clear_buttons{
     font-size:32px;
