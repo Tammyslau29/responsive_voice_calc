@@ -1,0 +1,53 @@
+.calculator_body{
+    background-color: grey;
+    width:30%;
+    height: 81vh;
+    display: inline-block;
+    border: 1px solid black;
+}
+.calculator_display {
+    width:96%;
+    height:20%;
+    vertical-align: top;
+    background-color: lightseagreen;
+    margin: 11px auto;
+}
+.button_body{
+    margin:3%;
+}
+.clear_keys{
+  width: 80%;
+    display: inline-block;
+}
+.clear_buttons{
+    width:49%;
+    height:10vh;
+}
+.numeric_keys{
+    width: 80%;
+    float:left;
+    display: inline-block;
+}
+.numeric_buttons{
+    width:32%;
+    height:12vh;
+    outline: none;
+}
+.arithmetic_functions{
+    width:20%;
+    float:right;
+    display:inline-block;
+}
+.arithmetic_buttons{
+    width:100%;
+    height:10vh;
+    margin-bottom: 7px;
+}
+#addition_button{
+    height:24.5vh;
+}
+.numeric_buttons, .arithmetic_buttons, .clear_buttons{
+    font-size:1em;
+    font-weight: 800;
+    background-color: lightskyblue;
+}
