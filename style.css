@@ -5,11 +5,11 @@
     display: inline-block;
     border: 1px solid black;
 }
-#calculator_display {
+.calculator_display {
     width:96%;
     height:20%;
     vertical-align: top;
-    background-color: blue;
+    background-color: lightseagreen;
     margin: 11px auto;
 }
 .button_body{
@@ -44,9 +44,10 @@
     margin-bottom: 7px;
 }
 #addition_button{
-    height:24vh;
+    height:24.5vh;
 }
 .numeric_buttons, .arithmetic_buttons, .clear_buttons{
     font-size:1em;
     font-weight: 800;
+    background-color: lightskyblue;
 }
