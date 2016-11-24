@@ -1,5 +1,5 @@
 .calculator_body{
-    background-color: grey;
+    background-color: lightgrey;
     width:30%;
     height: 81vh;
     display: inline-block;
@@ -9,8 +9,10 @@
     width:96%;
     height:20%;
     vertical-align: top;
-    background-color: lightseagreen;
+    background-color: lightcoral;
     margin: 11px auto;
+    color:white;
+    font-size: 8em;
 }
 .button_body{
     margin:3%;
@@ -22,6 +24,7 @@
 .clear_buttons{
     width:49%;
     height:10vh;
+    background-color: lightcyan;
 }
 .numeric_keys{
     width: 80%;
@@ -31,7 +34,7 @@
 .numeric_buttons{
     width:32%;
     height:12vh;
-    outline: none;
+    background-color: lightsalmon;
 }
 .arithmetic_functions{
     width:20%;
@@ -42,12 +45,15 @@
     width:100%;
     height:10vh;
     margin-bottom: 7px;
+    background-color: lightgoldenrodyellow;
 }
 #addition_button{
     height:24.5vh;
 }
 .numeric_buttons, .arithmetic_buttons, .clear_buttons{
-    font-size:1em;
+    font-size:1.5em;
     font-weight: 800;
-    background-color: lightskyblue;
+    border-radius: 45%;
+    border:none;
+    color:lightseagreen;
 }
