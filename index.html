@@ -4,24 +4,10 @@
     <meta charset="UTF-8">
     <title>Calculator</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
+    <!--<script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>-->
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script>
-        $(document).ready(function () {
-            $(".numeric_buttons").click(define_val);
-            $(".arithmetic_buttons").click(define_val);
-            $(".clear_buttons").click(define_val);
-        });
-        var my_calculator = new calculator(basic_math);
-        function basic_math(type, value, item) {
-            $(".calculator_display").text(value);
-        }
-        function define_val() {
-            var val = $(this).text();
-            my_calculator.addItem(val);
-            console.log(val);
-        }
-    </script>
+    <script src="script.js"></script>
+</head>
 <body>
 <div class="calculator_body">
     <div class="calculator_display"></div>
@@ -31,7 +17,7 @@
             <button class="clear_buttons" type="button">CE</button>
         </div>
         <div class="arithmetic_functions">
-            <button class="arithmetic_buttons" type="button">/</button>
+            <button class="arithmetic_buttons" type="button">&divide;</button>
             <button class="arithmetic_buttons" type="button">x</button>
             <button class="arithmetic_buttons" type="button">-</button>
             <button class="arithmetic_buttons" id="addition_button" type="button">+</button>
