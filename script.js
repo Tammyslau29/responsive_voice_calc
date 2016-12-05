@@ -17,14 +17,14 @@ function define_val() {
     }
     var last_index = button_storage_array.length-1;
     if (button_storage_array.length > 0 && button_clicked.type === "number" && button_storage_array[last_index].type ==="number" ){
-     button_storage_array[last_index].value += button_clicked.value
-    }else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type==="operator"){
+        button_storage_array[last_index].value += button_clicked.value
+    } else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type==="operator"){
         button_storage_array[last_index].type = button_clicked.type
     } else if(button_storage_array.length > 0 || button_clicked.type === "number"){
         button_storage_array.push(button_clicked)
+    } else if(button_clicked.type === "equalSign"){
+        calculate(button_storage_array);
     }
-    console.log(button_storage_array)
-    // calculate(button_storage_array);
 }
 function find_type(text){
     var type_of_text;
@@ -83,9 +83,8 @@ function calculate(array){
         var current_value = array[i];
         if (current_value.type === "operator"){
             var front_number = array[i-1];
-            var back_number = array[i+1];
             if (current_value.type === "+" || current_value.type === "-"){
-                addition_array.push(current_value, front_number)
+                addition_array.push(front_number, current_value)
             } else if (current_value.type === "*" || current_value.type === "/") {
                 var multiplication_array = [];
                 multiplication_array.push(front_number);
@@ -94,24 +93,47 @@ function calculate(array){
                     multiplication_array.push(multiply_loop_current_value);
                     i++;
                     multiply_loop_current_value = array[i];
+                    if (i > array.length-1){
+                        break;
+                    }
                 }
-
+                var multiplication_result = process(multiplication_array);
+                var new_multiplication_object = {
+                    type: "number",
+                    value: multiplication_result
+                }
+                addition_array.push(new_multiplication_object);
+                if(array[i] !== undefined){
+                    addition_array.push(array[i])
+                }
             }
         }
+        if (i === array.length -1 && (array[i-1].value === "+" || array[i-1].value === "-")) {
+            addition_array.push(current_value);
+        }
     }
+    return process(addition_array);
 }
 
-function process_multiply(multiplication_array) {
-    var result = multiplication_array[0].value;
-    for (var j = 0; j < multiplication_array.length; j++) {
-        var current_value = multiplication_array[j];
+function process(values_array) {
+    var result = values_array[0].value;
+    for (var j = 0; j < values_array.length; j++) {
+        var current_value = values_array[j];
         if(current_value.type === "operator"){
-            var back_number = multiplication_array[j + 1].value;
+            var back_number = values_array[j + 1].value;
             switch (current_value) {
                 case "*":
                     result *= back_number;
+                    break;
                 case "/":
                     result /= back_number;
+                    break;
+                case "+":
+                    result += back_number;
+                    break;
+                case "-":
+                    result -= back_number;
+                    break;
             }
         }
 
