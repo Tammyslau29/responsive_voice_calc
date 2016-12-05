@@ -11,12 +11,18 @@ var button_storage_array = [];
 function define_val() {
     // var val = $(this).text();
     // my_calculator.addItem(val);
-    var buttons_clicked = {
+    var button_clicked = {
         type: find_type($(this).text()),
         value: $(this).text()
     }
-    button_storage_array.push(buttons_clicked)
-    concat_string(button_storage_array)
+    var last_index = button_storage_array.length-1;
+    if (button_storage_array.length > 0 && button_clicked.type === "number" && button_storage_array[last_index].type ==="number" ){
+     button_storage_array[last_index].value += button_clicked.value
+    }else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type==="operator"){
+        button_storage_array[last_index].type = button_clicked.type
+    } else if(button_storage_array.length > 0 || button_clicked.type === "number"){
+        button_storage_array.push(button_clicked)
+    }
     console.log(button_storage_array)
     // calculate(button_storage_array);
 }
@@ -71,37 +77,44 @@ function find_type(text){
     }
     return type_of_text
 }
-function concat_string(array1){
-    for (var i = 1; i < array1.length; i++){
-        if (array1[i].type == "number"){
-            var first_number = array1[i].value
-            var second_number = array1[i-1].value
-            console.log(second_number.concat(first_number))
-            return
+function calculate(array){
+    var addition_array=[];
+    for (var i = 0; i < array.length; i++) {
+        var current_value = array[i];
+        if (current_value.type === "operator"){
+            var front_number = array[i-1];
+            var back_number = array[i+1];
+            if (current_value.type === "+" || current_value.type === "-"){
+                addition_array.push(current_value, front_number)
+            } else if (current_value.type === "*" || current_value.type === "/") {
+                var multiplication_array = [];
+                multiplication_array.push(front_number);
+                var multiply_loop_current_value = current_value;
+                while (multiply_loop_current_value.type !== "-" || multiply_loop_current_value.type !== "+") {
+                    multiplication_array.push(multiply_loop_current_value);
+                    i++;
+                    multiply_loop_current_value = array[i];
+                }
+
+            }
         }
     }
 }
-// function calculate(array){
-//     var addition_array=[];
-//     for (var i = 0; i < array.length; i++){
-//        var array_index = array[i].value;
-//         var front_number = array[i+1].value;
-//         var back_number = array[i-1].value
-//         if (array_index === "+" || array_index === "-"){
-//            addition_array.push(array_index, front_number, back_number)
-//             if (array_index === "*" || array_index === "/"){
-//                 switch (array_index){
-//                     case "*":
-//                         var product = front_number * back_number;
-//                         return product;
-//                         break;
-//                     case "/":
-//                         var quotient = front_number/back_number;
-//                         return quotient;
-//                         break;
-//                 }
-//             }
-//
-//         }
-//     }
-// }
+
+function process_multiply(multiplication_array) {
+    var result = multiplication_array[0].value;
+    for (var j = 0; j < multiplication_array.length; j++) {
+        var current_value = multiplication_array[j];
+        if(current_value.type === "operator"){
+            var back_number = multiplication_array[j + 1].value;
+            switch (current_value) {
+                case "*":
+                    result *= back_number;
+                case "/":
+                    result /= back_number;
+            }
+        }
+
+    }
+    return result;
+}
