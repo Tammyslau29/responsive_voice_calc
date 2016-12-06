@@ -15,31 +15,37 @@ function define_val() {
         type: find_type($(this).text()),
         value: $(this).text()
     };
-    var last_index = button_storage_array.length - 1;
+    var last_index = button_storage_array.length-1;
     if (button_storage_array.length > 0 && button_clicked.type === "number" && button_storage_array[last_index].type === "number"){
-            button_storage_array[last_index].value += button_clicked.value;
+        if(button_storage_array[last_index].value.indexOf(".") > -1 && button_clicked.value === "."){
+            return;
+        } else{
+            button_storage_array[last_index].value += button_clicked.value ;
+        }
         console.log(button_storage_array)
     } else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type === "operator") {
         button_storage_array[last_index].value = button_clicked.value;
         console.log(button_storage_array)
     } else if (button_storage_array.length > 0 && button_clicked.type === "equalSign") {
-        var calculate_result = calculate(button_storage_array);
+            var calculate_result = calculate(button_storage_array);
+            var new_object = {value: calculate_result};
+            var last_operator = button_storage_array[button_storage_array.length - 2];
+            var last_number = button_storage_array[button_storage_array.length - 1];
+            button_storage_array = [];
+            button_storage_array.push(new_object, last_operator, last_number);
     } else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
         button_storage_array.pop();
     } else if(button_storage_array.length > 0 || button_clicked.type === "number"){
-        if(button_clicked.type === "number" && button_clicked.value !== "."){
-            button_clicked.value = parseFloat(button_clicked.value);
-        }
         button_storage_array.push(button_clicked);
         console.log(button_storage_array)
     }
-    for(var display_index = 0; display_index < button_storage_array.length; display_index++){
-        if(button_clicked.value ==="CE"){
-            $('.calculator_display').text("");
-            button_storage_array=[];
-        }else if(button_clicked.type === "equalSign"){
-            $('.calculator_display').text(calculate_result);
-        }else {
+    if(button_clicked.value ==="CE"){
+        $('.calculator_display').text("");
+        button_storage_array=[];
+    }else if(button_clicked.type === "equalSign"){
+        $('.calculator_display').text(calculate_result);
+    }else {
+        for (var display_index = 0; display_index < button_storage_array.length; display_index++) {
             $('.calculator_display').text(button_storage_array[display_index].value);
         }
     }
@@ -124,6 +130,8 @@ function calculate(array){
                         break;
                     }
                 }
+                multiplication_array[multiplication_array.length - 1].operand = "second operand";
+                multiplication_array[multiplication_array.length - 2].arithmetic = "first operator";
                 var multiplication_result = process(multiplication_array);
                 var new_multiplication_object = {
                     type: "number",
@@ -145,7 +153,7 @@ function process(values_array) {
     var result = parseFloat(values_array[0].value);
     for (var j = 0; j < values_array.length; j++) {
         var current_value = values_array[j];
-        if(current_value.type === "operator"){
+        if (current_value.type === "operator") {
             var back_number = parseFloat(values_array[j + 1].value);
             switch (current_value.value) {
                 case "*":
@@ -163,5 +171,5 @@ function process(values_array) {
             }
         }
     }
-    return result.toFixed(2);
+    return result;
 }
