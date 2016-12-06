@@ -12,7 +12,8 @@
     background-color: lightcoral;
     margin: 11px auto;
     color:white;
-    font-size: 6em;
+    font-size: 5em;
+    overflow: auto;
 }
 .button_body{
     margin:3%;

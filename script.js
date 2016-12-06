@@ -11,7 +11,6 @@ var button_storage_array = [];
 function define_val() {
     // var val = $(this).text();
     // my_calculator.addItem(val);
-
     var button_clicked = {
         type: find_type($(this).text()),
         value: $(this).text()
@@ -19,18 +18,17 @@ function define_val() {
     var last_index = button_storage_array.length - 1;
     if (button_storage_array.length > 0 && button_clicked.type === "number" && button_storage_array[last_index].type === "number"){
         button_storage_array[last_index].value += button_clicked.value;
-        button_storage_array[last_index].value = parseInt(button_storage_array[last_index].value);
         console.log(button_storage_array)
     } else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type === "operator") {
         button_storage_array[last_index].value = button_clicked.value;
         console.log(button_storage_array)
     } else if (button_storage_array.length > 0 && button_clicked.type === "equalSign") {
         var calculate_result = calculate(button_storage_array);
-    }else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
-        button_storage_array.pop(last_index);
-    }else if(button_storage_array.length > 0 || button_clicked.type === "number"){
-        if(button_clicked.type === "number"){
-            button_clicked.value = parseInt(button_clicked.value);
+    } else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
+        button_storage_array.pop();
+    } else if(button_storage_array.length > 0 || button_clicked.type === "number"){
+        if(button_clicked.type === "number" && button_clicked.value !== "."){
+            button_clicked.value = parseFloat(button_clicked.value);
         }
         button_storage_array.push(button_clicked);
         console.log(button_storage_array)
@@ -77,6 +75,9 @@ function find_type(text){
             type_of_text = "number";
             break;
         case "0":
+            type_of_text = "number";
+            break;
+        case ".":
             type_of_text = "number";
             break;
         case "+":
@@ -141,11 +142,11 @@ function calculate(array){
     return process(addition_array);
 }
 function process(values_array) {
-    var result = values_array[0].value;
+    var result = parseFloat(values_array[0].value);
     for (var j = 0; j < values_array.length; j++) {
         var current_value = values_array[j];
         if(current_value.type === "operator"){
-            var back_number = values_array[j + 1].value;
+            var back_number = parseFloat(values_array[j + 1].value);
             switch (current_value.value) {
                 case "*":
                     result *= back_number;
@@ -162,5 +163,5 @@ function process(values_array) {
             }
         }
     }
-    return result;
+    return result.toFixed(4);
 }
