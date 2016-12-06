@@ -11,19 +11,39 @@ var button_storage_array = [];
 function define_val() {
     // var val = $(this).text();
     // my_calculator.addItem(val);
+
     var button_clicked = {
         type: find_type($(this).text()),
         value: $(this).text()
+    };
+    var last_index = button_storage_array.length - 1;
+    if (button_storage_array.length > 0 && button_clicked.type === "number" && button_storage_array[last_index].type === "number"){
+        button_storage_array[last_index].value += button_clicked.value;
+        button_storage_array[last_index].value = parseInt(button_storage_array[last_index].value);
+        console.log(button_storage_array)
+    } else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type === "operator") {
+        button_storage_array[last_index].value = button_clicked.value;
+        console.log(button_storage_array)
+    } else if (button_storage_array.length > 0 && button_clicked.type === "equalSign") {
+        var calculate_result = calculate(button_storage_array);
+    }else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
+        button_storage_array.pop(last_index);
+    }else if(button_storage_array.length > 0 || button_clicked.type === "number"){
+        if(button_clicked.type === "number"){
+            button_clicked.value = parseInt(button_clicked.value);
+        }
+        button_storage_array.push(button_clicked);
+        console.log(button_storage_array)
     }
-    var last_index = button_storage_array.length-1;
-    if (button_storage_array.length > 0 && button_clicked.type === "number" && button_storage_array[last_index].type ==="number" ){
-        button_storage_array[last_index].value += button_clicked.value
-    } else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type==="operator"){
-        button_storage_array[last_index].type = button_clicked.type
-    } else if(button_storage_array.length > 0 || button_clicked.type === "number"){
-        button_storage_array.push(button_clicked)
-    } else if(button_clicked.type === "equalSign"){
-        calculate(button_storage_array);
+    for(var display_index = 0; display_index < button_storage_array.length; display_index++){
+        if(button_clicked.value ==="CE"){
+            $('.calculator_display').text("");
+            button_storage_array=[];
+        }else if(button_clicked.type === "equalSign"){
+            $('.calculator_display').text(calculate_result);
+        }else {
+            $('.calculator_display').text(button_storage_array[display_index].value);
+        }
     }
 }
 function find_type(text){
@@ -68,11 +88,17 @@ function find_type(text){
         case "/":
             type_of_text = "operator";
             break;
-        case "x":
+        case "*":
             type_of_text = "operator";
             break;
         case "=":
             type_of_text = "equalSign";
+            break;
+        case "CE":
+            type_of_text = "clearEverything";
+            break;
+        case "C":
+            type_of_text = "clear";
             break;
     }
     return type_of_text
@@ -83,13 +109,13 @@ function calculate(array){
         var current_value = array[i];
         if (current_value.type === "operator"){
             var front_number = array[i-1];
-            if (current_value.type === "+" || current_value.type === "-"){
+            if (current_value.value === "+" || current_value.value === "-"){
                 addition_array.push(front_number, current_value)
-            } else if (current_value.type === "*" || current_value.type === "/") {
+            } else if (current_value.value === "*" || current_value.value === "/") {
                 var multiplication_array = [];
                 multiplication_array.push(front_number);
                 var multiply_loop_current_value = current_value;
-                while (multiply_loop_current_value.type !== "-" || multiply_loop_current_value.type !== "+") {
+                while (multiply_loop_current_value.value !== "-" || multiply_loop_current_value.value !== "+") {
                     multiplication_array.push(multiply_loop_current_value);
                     i++;
                     multiply_loop_current_value = array[i];
@@ -114,14 +140,13 @@ function calculate(array){
     }
     return process(addition_array);
 }
-
 function process(values_array) {
     var result = values_array[0].value;
     for (var j = 0; j < values_array.length; j++) {
         var current_value = values_array[j];
         if(current_value.type === "operator"){
             var back_number = values_array[j + 1].value;
-            switch (current_value) {
+            switch (current_value.value) {
                 case "*":
                     result *= back_number;
                     break;
@@ -136,7 +161,6 @@ function process(values_array) {
                     break;
             }
         }
-
     }
     return result;
 }
