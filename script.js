@@ -17,7 +17,7 @@ function define_val() {
     };
     var last_index = button_storage_array.length - 1;
     if (button_storage_array.length > 0 && button_clicked.type === "number" && button_storage_array[last_index].type === "number"){
-        button_storage_array[last_index].value += button_clicked.value;
+            button_storage_array[last_index].value += button_clicked.value;
         console.log(button_storage_array)
     } else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type === "operator") {
         button_storage_array[last_index].value = button_clicked.value;
@@ -128,7 +128,7 @@ function calculate(array){
                 var new_multiplication_object = {
                     type: "number",
                     value: multiplication_result
-                }
+                };
                 addition_array.push(new_multiplication_object);
                 if(array[i] !== undefined){
                     addition_array.push(array[i])
@@ -163,5 +163,5 @@ function process(values_array) {
             }
         }
     }
-    return result.toFixed(4);
+    return result.toFixed(2);
 }
