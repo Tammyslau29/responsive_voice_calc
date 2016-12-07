@@ -8,6 +8,7 @@ $(document).ready(function () {
 //     $(".calculator_display").text(value);
 // };
 var button_storage_array = [];
+var last_operator;
 function define_val() {
     // var val = $(this).text();
     // my_calculator.addItem(val);
@@ -27,13 +28,21 @@ function define_val() {
         button_storage_array[last_index].value = button_clicked.value;
         console.log(button_storage_array)
     } else if (button_storage_array.length > 0 && button_clicked.type === "equalSign") {
-            var calculate_result = calculate(button_storage_array);
-            var new_object = {value: calculate_result};
-            var last_operator = button_storage_array[button_storage_array.length - 2];
-            var last_number = button_storage_array[button_storage_array.length - 1];
-            button_storage_array = [];
-            button_storage_array.push(new_object, last_operator, last_number);
-    } else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
+        if (button_storage_array.length === 1 && last_operator !== undefined) {
+            button_storage_array.push(last_operator);
+        }
+        var result = calculate(button_storage_array);
+        if (button_storage_array[last_index].type === "operator") {
+            last_operator = button_storage_array[last_index];
+        } else {
+            last_operator = button_storage_array[last_index - 1];
+        }
+        var result_obj = {
+            value: result,
+            type:"number"
+        }
+        button_storage_array = [result_obj,last_operator];
+    }   else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
         button_storage_array.pop();
     } else if(button_storage_array.length > 0 || button_clicked.type === "number"){
         button_storage_array.push(button_clicked);
@@ -43,7 +52,7 @@ function define_val() {
         $('.calculator_display').text("");
         button_storage_array=[];
     }else if(button_clicked.type === "equalSign"){
-        $('.calculator_display').text(calculate_result);
+        $('.calculator_display').text(result);
     }else {
         for (var display_index = 0; display_index < button_storage_array.length; display_index++) {
             $('.calculator_display').text(button_storage_array[display_index].value);
@@ -154,7 +163,12 @@ function process(values_array) {
     for (var j = 0; j < values_array.length; j++) {
         var current_value = values_array[j];
         if (current_value.type === "operator") {
-            var back_number = parseFloat(values_array[j + 1].value);
+            var back_number;
+            if(j + 1 >= values_array.length){
+                back_number = result;
+            }else{
+                back_number = parseFloat(values_array[j + 1].value)
+            }
             switch (current_value.value) {
                 case "*":
                     result *= back_number;
