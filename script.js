@@ -8,7 +8,7 @@ $(document).ready(function () {
 //     $(".calculator_display").text(value);
 // };
 var button_storage_array = [];
-var last_operator;
+var last_operator, last_number;
 function define_val() {
     // var val = $(this).text();
     // my_calculator.addItem(val);
@@ -30,18 +30,30 @@ function define_val() {
     } else if (button_storage_array.length > 0 && button_clicked.type === "equalSign") {
         if (button_storage_array.length === 1 && last_operator !== undefined) {
             button_storage_array.push(last_operator);
+            button_storage_array.push(last_number);
         }
+        last_index = button_storage_array.length - 1;
         var result = calculate(button_storage_array);
         if (button_storage_array[last_index].type === "operator") {
             last_operator = button_storage_array[last_index];
+            if (last_operator.value === "+" || last_operator.value === "-") {
+                button_storage_array.pop();
+                last_number = {
+                    value: calculate(button_storage_array),
+                    type: "number"
+                };
+            } else {
+                last_number = button_storage_array[last_index - 1]
+            }
         } else {
             last_operator = button_storage_array[last_index - 1];
+            last_number = button_storage_array[last_index];
         }
         var result_obj = {
-            value: result,
+            value: result+"",
             type:"number"
         }
-        button_storage_array = [result_obj,last_operator];
+        button_storage_array = [result_obj];
     }   else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
         button_storage_array.pop();
     } else if(button_storage_array.length > 0 || button_clicked.type === "number"){
@@ -51,12 +63,16 @@ function define_val() {
     if(button_clicked.value ==="CE"){
         $('.calculator_display').text("");
         button_storage_array=[];
+        last_operator = undefined;
+        last_number = undefined;
     }else if(button_clicked.type === "equalSign"){
         $('.calculator_display').text(result);
     }else {
+        var display_string = "";
         for (var display_index = 0; display_index < button_storage_array.length; display_index++) {
-            $('.calculator_display').text(button_storage_array[display_index].value);
+            display_string += button_storage_array[display_index].value;
         }
+        $('.calculator_display').text(display_string);
     }
 }
 function find_type(text){
@@ -139,20 +155,15 @@ function calculate(array){
                         break;
                     }
                 }
-                multiplication_array[multiplication_array.length - 1].operand = "second operand";
-                multiplication_array[multiplication_array.length - 2].arithmetic = "first operator";
                 var multiplication_result = process(multiplication_array);
                 var new_multiplication_object = {
                     type: "number",
                     value: multiplication_result
                 };
                 addition_array.push(new_multiplication_object);
-                if(array[i] !== undefined){
-                    addition_array.push(array[i])
-                }
             }
         }
-        if (i === array.length -1 && (array[i-1].value === "+" || array[i-1].value === "-")) {
+        if (array.length === 1 || (i === array.length -1 && (array[i-1].value === "+" || array[i-1].value === "-"))) {
             addition_array.push(current_value);
         }
     }
