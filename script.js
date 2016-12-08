@@ -1,18 +1,13 @@
 $(document).ready(function () {
-    $(".numeric_buttons").click(define_val);
-    $(".arithmetic_buttons").click(define_val);
-    $(".clear_buttons").click(define_val);
-    $(".equal_buttons").click(define_val);
+    $(".numeric_buttons").click(on_click);
+    $(".arithmetic_buttons").click(on_click);
+    $(".clear_buttons").click(on_click);
+    $(".equal_buttons").click(on_click);
 });
-// var my_calculator = new calculator(basic_math);
-// function basic_math(type, value, item) {
-//     $(".calculator_display").text(value);
-// };
 var button_storage_array = [];
 var last_operator, last_number;
-function define_val() {
-    // var val = $(this).text();
-    // my_calculator.addItem(val);
+function on_click() {
+   speak_entry($(this).data("string"));
     var button_clicked = {
         type: find_type($(this).text()),
         value: $(this).text()
@@ -28,6 +23,8 @@ function define_val() {
     } else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type === "operator") {
         button_storage_array[last_index].value = button_clicked.value;
         console.log(button_storage_array)
+    } else if(button_storage_array.length === 0 && button_clicked.type === "equalSign"){
+        $('.calculator_display').text("Ready");
     } else if (button_storage_array.length > 0 && button_clicked.type === "equalSign") {
         if (button_storage_array.length === 1 && last_operator !== undefined) {
             button_storage_array.push(last_operator);
@@ -51,9 +48,9 @@ function define_val() {
             last_number = button_storage_array[last_index];
         }
         var result_obj = {
-            value: result+"",
+            value: result + "",
             type:"number"
-        }
+        };
         button_storage_array = [result_obj];
     }   else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
         button_storage_array.pop();
@@ -67,6 +64,7 @@ function define_val() {
         last_operator = undefined;
         last_number = undefined;
     }else if(button_clicked.type === "equalSign"){
+        speak_entry(result);
         $('.calculator_display').text(result);
     }else {
         var display_string = "";
@@ -75,6 +73,10 @@ function define_val() {
         }
         $('.calculator_display').text(display_string);
     }
+}
+
+function speak_entry(string){
+    responsiveVoice.speak(string);
 }
 function find_type(text){
     var type_of_text;
@@ -197,5 +199,5 @@ function process(values_array) {
             }
         }
     }
-    return result;
+    return result + "";
 }

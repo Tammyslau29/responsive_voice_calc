@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="script.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato|Raleway" rel="stylesheet">
+    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 </head>
 <body>
 <div class="calculator_body">
@@ -15,30 +16,30 @@
     <div class="calculator_display"></div>
     <div class="button_body">
         <div class="clear_keys">
-            <button class="clear_buttons" type="button">C</button>
-            <button class="clear_buttons" type="button">CE</button>
+            <button class="clear_buttons" type="button" data-string="clear">C</button>
+            <button class="clear_buttons" type="button" data-string="clear everything">CE</button>
         </div>
         <div class="arithmetic_functions">
-            <button class="arithmetic_buttons" type="button">/</button>
-            <button class="arithmetic_buttons" type="button">*</button>
-            <button class="arithmetic_buttons" type="button">-</button>
-            <button class="arithmetic_buttons" type="button">+</button>
+            <button class="arithmetic_buttons" type="button" data-string="divided by">/</button>
+            <button class="arithmetic_buttons" type="button" data-string="multiplied by">*</button>
+            <button class="arithmetic_buttons" type="button" data-string="minus">-</button>
+            <button class="arithmetic_buttons" type="button" data-string="plus">+</button>
         </div>
         <div class="numeric_keys">
-            <button class="numeric_buttons" type="button">7</button>
-            <button class="numeric_buttons" type="button">8</button>
-            <button class="numeric_buttons" type="button">9</button>
-            <button class="numeric_buttons" type="button">4</button>
-            <button class="numeric_buttons" type="button">5</button>
-            <button class="numeric_buttons" type="button">6</button>
-            <button class="numeric_buttons" type="button">1</button>
-            <button class="numeric_buttons" type="button">2</button>
-            <button class="numeric_buttons" type="button">3</button>
+            <button class="numeric_buttons" type="button" data-string="seven">7</button>
+            <button class="numeric_buttons" type="button" data-string="eight">8</button>
+            <button class="numeric_buttons" type="button" data-string="nine">9</button>
+            <button class="numeric_buttons" type="button" data-string="four">4</button>
+            <button class="numeric_buttons" type="button" data-string="five">5</button>
+            <button class="numeric_buttons" type="button" data-string="six">6</button>
+            <button class="numeric_buttons" type="button" data-string="one">1</button>
+            <button class="numeric_buttons" type="button" data-string="two">2</button>
+            <button class="numeric_buttons" type="button" data-string="three">3</button>
         </div>
         <div class="equal_keys">
-            <button class="equal_buttons" type="button">0</button>
-            <button class="equal_buttons" type="button">.</button>
-            <button class="equal_buttons" id="equal_button" type="button">=</button>
+            <button class="equal_buttons" type="button" data-string="zero">0</button>
+            <button class="equal_buttons" type="button" data-string="dot">.</button>
+            <button class="equal_buttons" id="equal_button" type="button" data-string="equals">=</button>
         </div>
     </div>
 </div>
