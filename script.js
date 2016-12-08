@@ -59,22 +59,24 @@ function on_click() {
         console.log(button_storage_array)
     }
     if(button_clicked.value ==="CE"){
-        $('.calculator_display').text("");
+        display_result("");
         button_storage_array=[];
         last_operator = undefined;
         last_number = undefined;
     }else if(button_clicked.type === "equalSign"){
         speak_entry(result);
-        $('.calculator_display').text(result);
+        display_result(result);
     }else {
         var display_string = "";
         for (var display_index = 0; display_index < button_storage_array.length; display_index++) {
             display_string += button_storage_array[display_index].value;
         }
-        $('.calculator_display').text(display_string);
+        display_result(display_string);
     }
 }
-
+function display_result(display)  {
+    $('.calculator_display').text(display);
+}
 function speak_entry(string){
     responsiveVoice.speak(string);
 }
