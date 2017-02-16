@@ -1,14 +1,22 @@
+body{
+    background-image: url("image/cement.jpg");
+    background-position:center;
+}
 .calculator_body{
+    -webkit-box-shadow: 10px 10px 15px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 15px -2px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 15px -2px rgba(0,0,0,0.75);
     background-image: url("https://superdevresources.com/wp-content/uploads/2014/11/metal-texture.jpg");
     background-position:center;
     width:30%;
     height: 91vh;
     display: inline-block;
-    border: 1px solid black;
     text-align: center;
     font-family: 'Raleway', sans-serif;
     color:#749696;
     margin: 2px 0 0 0;
+    padding-top: 10px;
+    transform: translate(100%, 0%);
 }
 .calculator_display {
     width:96%;
@@ -47,16 +55,23 @@
     margin-bottom: 1px;
     background-color: ghostwhite;
 }
-.equal_buttons{
+.decimal_buttons{
     width:24%;
     height:11.8vh;
     margin-bottom: 1px;
     background-color: ghostwhite;
 }
 #equal_button{
-    width:26.5vh;
+    width:20.5vh;
     background-color: #749696;
     color:white;
+    height: 12vh;
+}
+.decimal_keys{
+    width: 102%;
+    position: relative;
+    display: inline-block;
+    right: 25%;
 }
 .arithmetic_functions{
     width:20%;
@@ -69,12 +84,12 @@
     margin-bottom: 2px;
     background-color: lightblue;
 }
-.arithmetic_buttons:active, .numeric_buttons:active, .clear_buttons:active, .equal_buttons:active {
+.arithmetic_buttons:active, .numeric_buttons:active, .clear_buttons:active, .decimal_buttons:active , .equal_buttons:active{
     background-color: white;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
-.numeric_buttons, .arithmetic_buttons, .clear_buttons, .equal_buttons{
+.numeric_buttons, .arithmetic_buttons, .clear_buttons, .decimal_buttons, .equal_buttons{
     font-size: 1.5em;
     font-weight: 500;
     border-radius: 12px;
@@ -83,3 +98,10 @@
     box-shadow: 0 7px lightslategrey;
     outline:none;
 }
+.equal_keys{
+    position: relative;
+    right: -28%;
+    display: inline;
+    bottom: 12vh;
+}
+
