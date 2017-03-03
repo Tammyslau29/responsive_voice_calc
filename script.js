@@ -3,29 +3,32 @@ $(document).ready(function () {
     $(".arithmetic_buttons").click(on_click);
     $(".clear_buttons").click(on_click);
     $(".equal_buttons").click(on_click);
+    $(".decimal_buttons").click(on_click);
 });
 var button_storage_array = [];
 var last_operator, last_number;
+
 function on_click() {
-   speak_entry($(this).data("string"));
-    var button_clicked = {
+    var button_clicked;
+    var last_index = button_storage_array.length - 1;
+    button_clicked = {
         type: find_type($(this).text()),
         value: $(this).text()
     };
-    var last_index = button_storage_array.length-1;
     if (button_storage_array.length > 0 && button_clicked.type === "number" && button_storage_array[last_index].type === "number"){
         if(button_storage_array[last_index].value.indexOf(".") > -1 && button_clicked.value === "."){
             return;
         } else{
             button_storage_array[last_index].value += button_clicked.value ;
         }
-        console.log(button_storage_array)
-    } else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type === "operator") {
+    }
+    else if (button_storage_array.length > 0 && button_clicked.type === "operator" && button_storage_array[last_index].type === "operator"){
         button_storage_array[last_index].value = button_clicked.value;
-        console.log(button_storage_array)
-    } else if(button_storage_array.length === 0 && button_clicked.type === "equalSign"){
+    }
+    else if(button_storage_array.length === 0 && button_clicked.type === "equalSign"){
         $('.calculator_display').text("Ready");
-    } else if (button_storage_array.length > 0 && button_clicked.type === "equalSign") {
+    }
+    else if (button_storage_array.length > 0 && button_clicked.type === "equalSign") {
         if (button_storage_array.length === 1 && last_operator !== undefined) {
             button_storage_array.push(last_operator);
             button_storage_array.push(last_number);
@@ -34,16 +37,9 @@ function on_click() {
         var result = calculate(button_storage_array);
         if (button_storage_array[last_index].type === "operator") {
             last_operator = button_storage_array[last_index];
-            if (last_operator.value === "+" || last_operator.value === "-") {
-                button_storage_array.pop();
-                last_number = {
-                    value: calculate(button_storage_array),
-                    type: "number"
-                };
-            } else {
-                last_number = button_storage_array[last_index - 1]
-            }
-        } else {
+            handle_operator_then_equals(last_operator);
+        }
+        else {
             last_operator = button_storage_array[last_index - 1];
             last_number = button_storage_array[last_index];
         }
@@ -52,18 +48,36 @@ function on_click() {
             type:"number"
         };
         button_storage_array = [result_obj];
-    }   else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
+    }
+    else if (button_storage_array.length > 0 && button_clicked.type === "clear"){
         button_storage_array.pop();
-    } else if(button_storage_array.length > 0 || button_clicked.type === "number"){
+    }
+    else if(button_storage_array.length > 0 || button_clicked.type === "number"){
         button_storage_array.push(button_clicked);
         console.log(button_storage_array)
     }
-    if(button_clicked.value ==="CE"){
-        display_result("");
+    speak_entry($(this).data("string"));
+    handle_clear_or_equals(button_clicked.value, result);
+}
+
+function handle_operator_then_equals(last_operator){
+    if (last_operator.value === "+" || last_operator.value === "-") {
+        button_storage_array.pop();
+        last_number = {
+            value: calculate(button_storage_array),
+            type: "number"
+        };
+    } else {
+        last_number = button_storage_array[last_index - 1]
+    }
+}
+function handle_clear_or_equals(button_clicked, result){
+    if(button_clicked ==="CE"){
         button_storage_array=[];
         last_operator = undefined;
         last_number = undefined;
-    }else if(button_clicked.type === "equalSign"){
+        display_result("");
+    }else if(button_clicked === "="){
         speak_entry(result);
         display_result(result);
     }else {
@@ -74,7 +88,7 @@ function on_click() {
         display_result(display_string);
     }
 }
-function display_result(display)  {
+function display_result(display){
     $('.calculator_display').text(display);
 }
 function speak_entry(string){
@@ -140,6 +154,7 @@ function find_type(text){
     }
     return type_of_text
 }
+
 function calculate(array){
     var addition_array=[];
     for (var i = 0; i < array.length; i++) {
@@ -148,24 +163,9 @@ function calculate(array){
             var front_number = array[i-1];
             if (current_value.value === "+" || current_value.value === "-"){
                 addition_array.push(front_number, current_value)
-            } else if (current_value.value === "*" || current_value.value === "/") {
-                var multiplication_array = [];
-                multiplication_array.push(front_number);
-                var multiply_loop_current_value = current_value;
-                while (multiply_loop_current_value.value !== "-" || multiply_loop_current_value.value !== "+") {
-                    multiplication_array.push(multiply_loop_current_value);
-                    i++;
-                    multiply_loop_current_value = array[i];
-                    if (i > array.length-1){
-                        break;
-                    }
-                }
-                var multiplication_result = process(multiplication_array);
-                var new_multiplication_object = {
-                    type: "number",
-                    value: multiplication_result
-                };
-                addition_array.push(new_multiplication_object);
+            }
+            else if (current_value.value === "*" || current_value.value === "/") {
+                handle_multiplication(front_number, current_value, i, array, addition_array);
             }
         }
         if (array.length === 1 || (i === array.length -1 && (array[i-1].value === "+" || array[i-1].value === "-"))) {
@@ -173,6 +173,25 @@ function calculate(array){
         }
     }
     return process(addition_array);
+}
+function handle_multiplication(front_number, current_value, i, array, addition_array){
+    var multiplication_array = [];
+    multiplication_array.push(front_number);
+    var multiply_loop_current_value = current_value;
+    while (multiply_loop_current_value.value !== "-" || multiply_loop_current_value.value !== "+") {
+        multiplication_array.push(multiply_loop_current_value);
+        i++;
+        multiply_loop_current_value = array[i];
+        if (i > array.length-1){
+            break;
+        }
+    }
+    var multiplication_result = process(multiplication_array);
+    var new_multiplication_object = {
+        type: "number",
+        value: multiplication_result
+    };
+    addition_array.push(new_multiplication_object);
 }
 function process(values_array) {
     var result = parseFloat(values_array[0].value);
