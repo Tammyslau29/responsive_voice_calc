@@ -10,6 +10,7 @@ var last_operator, last_number;
 
 function on_click() {
     var button_clicked;
+    var result;
     var last_index = button_storage_array.length - 1;
     var last_item = button_storage_array[last_index];
     button_clicked = {
@@ -22,7 +23,8 @@ function on_click() {
         } else if(button_clicked.type === "number") {
             button_storage_array.push(button_clicked);
         }
-    } else if (button_storage_array.length > 0) {
+    }
+    else if (button_storage_array.length > 0) {
         if (button_clicked.type === "number" && last_item.type === "number"){
             if(last_item.value.indexOf(".") > -1 && button_clicked.value === "."){
                 return;
@@ -34,29 +36,12 @@ function on_click() {
             last_item.value = button_clicked.value;
         }
         else if (button_clicked.type === "equalSign") {
-            if (button_storage_array.length === 1 && last_operator !== undefined) {
-                button_storage_array.push(last_operator);
-                button_storage_array.push(last_number);
-            }
-            last_index = button_storage_array.length - 1;
-            var result = calculate(button_storage_array);
-            if (last_item.type === "operator") {
-                last_operator = button_storage_array[last_index];
-                handle_operator_then_equals(last_operator);
-            }
-            else {
-                last_operator = button_storage_array[last_index - 1];
-                last_number = button_storage_array[last_index];
-            }
-            var result_obj = {
-                value: result + "",
-                type:"number"
-            };
-            button_storage_array = [result_obj];
+            result = handle_equals(last_index, last_item);
         }
         else if (button_clicked.type === "clear") {
             button_storage_array.pop();
-        } else {
+        }
+        else {
             button_storage_array.push(button_clicked);
         }
     }
@@ -64,6 +49,28 @@ function on_click() {
     handle_clear_or_equals(button_clicked.value, result);
 }
 
+function handle_equals(last_index, last_item){
+    if (button_storage_array.length === 1 && last_operator !== undefined) {
+        button_storage_array.push(last_operator);
+        button_storage_array.push(last_number);
+    }
+    last_index = button_storage_array.length - 1;
+   var result = calculate(button_storage_array);
+    if (last_item.type === "operator") {
+        last_operator = button_storage_array[last_index];
+        handle_operator_then_equals(last_operator);
+    }
+    else {
+        last_operator = button_storage_array[last_index - 1];
+        last_number = button_storage_array[last_index];
+    }
+    var result_obj = {
+        value: result + "",
+        type:"number"
+    };
+    button_storage_array = [result_obj];
+    return result;
+}
 function handle_operator_then_equals(last_operator){
     if (last_operator.value === "+" || last_operator.value === "-") {
         button_storage_array.pop();
