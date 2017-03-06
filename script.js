@@ -5,9 +5,11 @@ $(document).ready(function () {
     $(".equal_buttons").click(on_click);
     $(".decimal_buttons").click(on_click);
 });
+
 var button_storage_array = [];
 var last_operator, last_number;
 
+/* click handler for all buttons which checks if it is an operator, operand, or equal button*/
 function on_click() {
     var button_clicked;
     var result;
@@ -46,9 +48,10 @@ function on_click() {
         }
     }
     speak_entry($(this).data("string"));
-    handle_clear_or_equals(button_clicked.value, result);
+    handle_clear_or_equals(button_clicked.value, result, last_index);
 }
 
+/*handles equal button press, and consecutive equal button presses if no operator and/or operand is provided*/
 function handle_equals(last_index, last_item){
     if (button_storage_array.length === 1 && last_operator !== undefined) {
         button_storage_array.push(last_operator);
@@ -58,7 +61,7 @@ function handle_equals(last_index, last_item){
    var result = calculate(button_storage_array);
     if (last_item.type === "operator") {
         last_operator = button_storage_array[last_index];
-        handle_operator_then_equals(last_operator);
+        handle_operator_then_equals(last_operator, last_index);
     }
     else {
         last_operator = button_storage_array[last_index - 1];
@@ -71,7 +74,9 @@ function handle_equals(last_index, last_item){
     button_storage_array = [result_obj];
     return result;
 }
-function handle_operator_then_equals(last_operator){
+
+/*handles one operand, one operator, then an equal press*/
+function handle_operator_then_equals(last_operator, last_index){
     if (last_operator.value === "+" || last_operator.value === "-") {
         button_storage_array.pop();
         last_number = {
@@ -82,13 +87,19 @@ function handle_operator_then_equals(last_operator){
         last_number = button_storage_array[last_index - 1]
     }
 }
-function handle_clear_or_equals(button_clicked, result){
+
+/*clear everything resets all variables to initial state, clear removes last index in button storage array, else the array is calculated*/
+function handle_clear_or_equals(button_clicked, result, last_index){
     if(button_clicked ==="CE"){
         button_storage_array=[];
         last_operator = undefined;
         last_number = undefined;
         display_result("");
-    }else if(button_clicked === "="){
+    }
+    else if(button_clicked === "C"){
+        button_storage_array[last_index].pop();
+    }
+    else if(button_clicked === "="){
         speak_entry(result);
         display_result(result);
     }else {
@@ -99,12 +110,15 @@ function handle_clear_or_equals(button_clicked, result){
         display_result(display_string);
     }
 }
+
 function display_result(display){
     $('.calculator_display').text(display);
 }
+
 function speak_entry(string){
     responsiveVoice.speak(string);
 }
+
 function find_type(text){
     var type_of_text;
     switch (text) {
@@ -166,6 +180,7 @@ function find_type(text){
     return type_of_text
 }
 
+/*if element is addition or subtraction, then move to addition array, else move element to multiplication array, then does math on all elements in the addition array*/
 function calculate(array){
     var addition_array=[];
     for (var i = 0; i < array.length; i++) {
@@ -185,6 +200,8 @@ function calculate(array){
     }
     return process(addition_array);
 }
+
+/*moves element before and after multiplication sign to a multiplication array, then does math and pushes result to addition array*/
 function handle_multiplication(front_number, current_value, i, array, addition_array){
     var multiplication_array = [];
     multiplication_array.push(front_number);
@@ -204,6 +221,8 @@ function handle_multiplication(front_number, current_value, i, array, addition_a
     };
     addition_array.push(new_multiplication_object);
 }
+
+/*checks to make sure it is an operand and does math accordingly, then returns result as a string*/
 function process(values_array) {
     var result = parseFloat(values_array[0].value);
     for (var j = 0; j < values_array.length; j++) {
