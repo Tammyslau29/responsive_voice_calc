@@ -24,7 +24,8 @@ Feature Name | Input | Result
 
 
 ## Planned Additions
-- ASCII key inputs.
+- Allow user to choose speech language
+- ASCII key inputs
 
 ## What I've Learned
 - How to approach seemingly complex problems by breaking them down into smaller, more-managable pieces.

@@ -8,6 +8,7 @@ $(document).ready(function () {
 
 var button_storage_array = [];
 var last_operator, last_number;
+var voice_queue = [];
 
 /* click handler for all buttons which checks if it is an operator, operand, or equal button*/
 function on_click() {
@@ -119,7 +120,18 @@ function display_result(display){
 }
 
 function speak_entry(string){
-    responsiveVoice.speak(string);
+    if(responsiveVoice.isPlaying()){
+        voice_queue.push(string)
+    }else{
+        responsiveVoice.speak(string, "UK English Male", {onstart: function() {}, onend: access_voice_queue});
+    }
+}
+
+function access_voice_queue(){
+    if(voice_queue.length > 0){
+        var string_to_speak = voice_queue.shift();
+        responsiveVoice.speak(string_to_speak, "UK English Male", {onstart: function() {}, onend: access_voice_queue})
+    }
 }
 
 function find_type(text){
