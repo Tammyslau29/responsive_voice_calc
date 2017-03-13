@@ -1,29 +1,40 @@
 # Calculator
 
-## Version 1
-#### Description
-Version 1 takes the layout and basic button click functionality built in the 2 previous versions and then ties in the calculation functionality. This version works toward more OOP understandings
-by taking the inputs from the calculator and inserting them into objects and then those objects into an array.
+## Description
+This is a full-functional calculator with added text-to-speech implementation.
 
 
-- <a href="https://github.com/Learning-Fuze/calculator/tree/v1#getting-started">Getting Started</a>
-- <a href="https://github.com/Learning-Fuze/calculator/tree/v1#scope">View Scope</a>
 
-## Version 0.5
-#### Description
-Version 0.5 adds in user functionality without needing to write the underneath logic of a calculator. With the introduction
-to the calculator object the user can interact with the object to receive the values after calculation has been completed.
+- <a href="https://tammyslau29.github.io/calculator/">Link To Live Page</a>
 
 
-- <a href="https://github.com/Learning-Fuze/calculator/tree/v0.5#getting-started">Getting Started</a>
-- <a href="https://github.com/Learning-Fuze/calculator/tree/v0.5#scope">View Scope</a>
+## Features
+#### Text-to-speech library implementation
+#### Order of operations
+- (1 + 3 / 4 + 10 * 2) yields 21.75
+#### Successive operations
+- (1 + 1 + 2 =) yields 4
+#### Operation Repeat 
+- (1 + 1 = = =) yields 4
+#### Changing operation keys
+- (1 + - * 2 =) yields 2
 
-## Version 0.1
-#### Description
-Version 0.1 is the starting point of the Calculator Project. You must create the base structure and styles, using bootstrap as you deem necessary. For this version we are looking to see that you
-understand how to create the basic structure of a web application, style it, and make it reasonably responsive.  No functionality will be encoded with this version.
+Feature Name | Input | Result  
+---|---| ---
+**Order of operations** | 1 + 3 / 4 + 10 * 2| 21.75 |
+**Partial operand**| 3 * =	| 9
+**Missing operation**| 3 =	| 3
+**Successive operations**      | 1 + 1 + 2 =      |   4 |
+**Changing operation keys** | 1 + - * 2 =      |    4 |
+**Operation rollover** | 1 + 1 + = + = | 8|
+**Operation repeat** | 1 + 1 = = =	| 4
+**Multiple operation keys**|  1 ++++ 2 =| 3
 
-- <a href="https://github.com/Learning-Fuze/calculator/tree/v0.1#getting-started">Getting Started</a>
-- <a href="https://github.com/Learning-Fuze/calculator/tree/v0.1#scope">View Scope</a>
-- <a href="https://github.com/Learning-Fuze/calculator/tree/v0.1#design">View Design</a>
-- <a href="https://github.com/Learning-Fuze/calculator/tree/v0.1#assignments---aka-criteria-for-success-on-this-version-of-the-project">View Assignments</a>
+
+
+
+## Planned Additions
+- ASCII key inputs.
+
+## What I've Learned
+- How to approach seemingly complex problems by breaking them down into smaller, more-managable pieces.
