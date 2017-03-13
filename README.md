@@ -9,16 +9,6 @@ This is a full-functional calculator with added text-to-speech implementation.
 
 
 ## Features
-#### Text-to-speech library implementation
-#### Order of operations
-- (1 + 3 / 4 + 10 * 2) yields 21.75
-#### Successive operations
-- (1 + 1 + 2 =) yields 4
-#### Operation Repeat 
-- (1 + 1 = = =) yields 4
-#### Changing operation keys
-- (1 + - * 2 =) yields 2
-
 Feature Name | Input | Result  
 ---|---| ---
 **Order of operations** | 1 + 3 / 4 + 10 * 2| 21.75 |
