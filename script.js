@@ -187,40 +187,41 @@ function find_type(text){
 }
 
 /*if element is addition or subtraction, then move to addition array, else move element to multiplication array, then does math on all elements in the addition array*/
-function calculate(array){
+function calculate(button_storage_array){
     var addition_array=[];
-    for (var i = 0; i < array.length; i++) {
-        var current_value = array[i];
+    for (var i = 0; i < button_storage_array.length; i++) {
+        var current_value = button_storage_array[i];
         if (current_value.type === "operator"){
-            var front_number = array[i-1];
+            var front_number = button_storage_array[i-1];
             if (current_value.value === "+" || current_value.value === "-"){
                 addition_array.push(front_number, current_value)
             }
             else if (current_value.value === "*" || current_value.value === "/") {
-                handle_multiplication(front_number, current_value, i, array, addition_array);
+                handle_multiplication(front_number, current_value, i, button_storage_array, addition_array);
             }
         }
-        if (array.length === 1 || (i === array.length -1 && (array[i-1].value === "+" || array[i-1].value === "-"))) {
+        if (button_storage_array.length === 1 || (i === button_storage_array.length -1 && (button_storage_array[i-1].value === "+" || button_storage_array[i-1].value === "-"))) {
             addition_array.push(current_value);
         }
     }
-    return process(addition_array);
+    return evaluate_operand_and_calculate(addition_array);
 }
 
 /*moves element before and after multiplication sign to a multiplication array, then does math and pushes result to addition array*/
-function handle_multiplication(front_number, current_value, i, array, addition_array){
+function handle_multiplication(front_number, current_value, i, entire_button_array, addition_array){
     var multiplication_array = [];
     multiplication_array.push(front_number);
     var multiply_loop_current_value = current_value;
-    while (multiply_loop_current_value.value !== "-" || multiply_loop_current_value.value !== "+") {
+    while (multiply_loop_current_value.value !== "-" && multiply_loop_current_value.value !== "+") {
         multiplication_array.push(multiply_loop_current_value);
         i++;
-        multiply_loop_current_value = array[i];
-        if (i > array.length-1){
+        current_value = entire_button_array[i];
+        multiply_loop_current_value = entire_button_array[i];
+        if (i > entire_button_array.length-1){
             break;
         }
     }
-    var multiplication_result = process(multiplication_array);
+    var multiplication_result = evaluate_operand_and_calculate(multiplication_array);
     var new_multiplication_object = {
         type: "number",
         value: multiplication_result
@@ -229,7 +230,7 @@ function handle_multiplication(front_number, current_value, i, array, addition_a
 }
 
 /*checks to make sure it is an operand and does math accordingly, then returns result as a string*/
-function process(values_array) {
+function evaluate_operand_and_calculate(values_array) {
     var result = parseFloat(values_array[0].value);
     for (var j = 0; j < values_array.length; j++) {
         var current_value = values_array[j];
