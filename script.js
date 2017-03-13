@@ -40,9 +40,6 @@ function on_click() {
         else if (button_clicked.type === "equalSign") {
             result = handle_equals(last_index, last_item);
         }
-        // else if (button_clicked.type === "clear") {
-        //     button_storage_array.pop();
-        // }
         else {
             button_storage_array.push(button_clicked);
         }
