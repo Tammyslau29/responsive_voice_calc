@@ -21,12 +21,13 @@ body{
     padding-bottom:5px;
 }
 .calculator_display {
+    line-height: 100px;
     width: 96%;
     height: 100px;
     background-color: rgba(41, 52, 58, 0.85);
     margin: 6px auto;
     color: #b5a93f;
-    font-size: 5em;
+    font-size: 2em;
     overflow: auto;
     font-family: 'Lato', sans-serif;
     border-style: inset;
@@ -39,6 +40,7 @@ body{
 }
 
 .button_body button {
+    cursor: pointer;
     flex: 1 1 25%;
     height: 20%;
     box-sizing: border-box;
@@ -60,4 +62,7 @@ body{
     color: #d6cc70;
     background-color: rgba(98, 115, 123, 0.86);
     font-size: 1.2em;
+}
+@-ms-viewport{
+    width: device-width;
 }

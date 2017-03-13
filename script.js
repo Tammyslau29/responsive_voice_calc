@@ -40,9 +40,9 @@ function on_click() {
         else if (button_clicked.type === "equalSign") {
             result = handle_equals(last_index, last_item);
         }
-        else if (button_clicked.type === "clear") {
-            button_storage_array.pop();
-        }
+        // else if (button_clicked.type === "clear") {
+        //     button_storage_array.pop();
+        // }
         else {
             button_storage_array.push(button_clicked);
         }
@@ -90,14 +90,20 @@ function handle_operator_then_equals(last_operator, last_index){
 
 /*clear everything resets all variables to initial state, clear removes last index in button storage array, else the array is calculated*/
 function handle_clear_or_equals(button_clicked, result, last_index){
-    if(button_clicked ==="CE"){
+    if(button_clicked ==="C"){
         button_storage_array=[];
         last_operator = undefined;
         last_number = undefined;
         display_result("");
     }
-    else if(button_clicked === "C"){
-        button_storage_array[last_index].pop();
+    if(button_clicked === "CE"){
+        button_storage_array.splice(last_index, 2);
+        var display_string = "";
+        for (var display_index = 0; display_index < button_storage_array.length; display_index++) {
+            display_string += button_storage_array[display_index].value;
+        }
+        display_result(display_string);
+
     }
     else if(button_clicked === "="){
         speak_entry(result);
