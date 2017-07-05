@@ -33,8 +33,6 @@ body{
     border-style: inset;
 }
 .button_body{
-    display: flex;
-    flex-wrap: wrap;
     height: 380px;
     margin: 10px;
 }
